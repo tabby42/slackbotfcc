@@ -1,0 +1,14 @@
+{
+  "name": "slackbotfcc",
+  "version": "1.0.0",
+  "description": "shout out slackbot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "irene",
+  "license": "MIT",
+  "dependencies": {
+    "slackbots": "^1.2.0"
+  }
+}
