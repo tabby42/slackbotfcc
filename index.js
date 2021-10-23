@@ -60,9 +60,14 @@ app.command("/shout", async ({ command, ack, say }) => {
 
 });
 
-(async () => {
+/* (async () => {
     const PORT = process.env.PORT || 5000
     // Start your app
     await app.start(PORT);
     console.log(`⚡️ Slack Bolt app is running on port ${PORT}!`);
+})(); */
+
+(async () => {
+    await app.start();
+    console.log('⚡️ Bolt app started');
 })();
