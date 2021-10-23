@@ -4,11 +4,17 @@
   "description": "shout out slackbot",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "irene",
   "license": "MIT",
+  "devDependencies": {
+    "dotenv": "^10.0.0"
+  },
   "dependencies": {
+    "@slack/bolt": "^3.7.0",
+    "axios": "^0.23.0",
     "slackbots": "^1.2.0"
   }
 }
