@@ -1,14 +1,10 @@
 const { App } = require("@slack/bolt");
-let axios;
-axios = require('axios');
-let dotenv;
-dotenv = require('dotenv');
+const dotenv = require('dotenv');
 dotenv.config();
+const fetch = require('cross-fetch');
+let tags = 'education|faith|future|happiness|inspirational'
 
-//xoxb-2623155770135-2662140614208-6PaexhkdE9SGVuZOlWP95aeX
-let app;
-
-app = new App({
+const app = new App({
     token: process.env.SLACK_BOT_TOKEN,
     signingSecret: process.env.SLACK_SIGNING_SECRET,
     socketMode:true, 
@@ -18,22 +14,50 @@ app = new App({
 app.command("/shout", async ({ command, ack, say }) => {
     try {
         await ack();
-        console.log(command.user_name);
-        //say("Hey, " + command.user_name + " Don't give up!");
-        say({"blocks": [
-            {
-              "type": "section",
-              "text": {
-                "type": "mrkdwn",
-                "text": `:zap: Hello <@${command.user_name}>!`
-              },
-            
+        fetch(`https://api.quotable.io/random?${tags}`)
+        .then(response => {
+            if(response.ok) {
+                let rsp = response.json();
+                //console.log(rsp);
+                return rsp;
+            } else {
+                throw new Error('Request failed!');
             }
-          ]});
+        })
+        .then(jsonResponse => {
+            //console.log(`${jsonResponse.content} —${jsonResponse.author}`)
+            let qu = `${jsonResponse.content}`;
+            let author = `${jsonResponse.author}`;
+            say({"blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": `*Hey, ${command.user_name}* :zap:`
+                  },
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": `*${qu}* :sunny:`
+                  },
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": `:sparkles: – *${author}*`
+                  },
+                }
+            ]});
+        })
+        
     } catch (error) {
         console.log("err")
         console.error(error);
     }
+
 });
 
 (async () => {
